@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MEOW KEY SYSTEM</title>
+<style>
+body {
+  background: #10101b;
+  color: white;
+  font-family: Arial, sans-serif;
+  text-align: center;
+  padding: 30px 15px;
+}
+.panel {
+  max-width: 350px;
+  margin: auto;
+  padding: 24px;
+  background: #202036;
+  border-radius: 16px;
+}
+input, button {
+  box-sizing: border-box;
+  width: 100%;
+  padding: 13px;
+  margin-top: 12px;
+  border: 0;
+  border-radius: 8px;
+}
+button {
+  background: #7957ff;
+  color: white;
+  font-weight: bold;
+}
+#result { overflow-wrap: anywhere; }
+</style>
+</head>
+<body>
+<div class="panel">
+  <h2>MEOW KEY SYSTEM</h2>
+  <p>ระบบสร้างคีย์ทดลอง</p>
+  <button onclick="generateKey()">สร้างคีย์ใหม่</button>
+  <input id="key" placeholder="กรอกคีย์">
+  <button onclick="checkKey()">ตรวจสอบคีย์</button>
+  <p id="result"></p>
+</div>
+<script>
+const validKeys = new Set();
+
+function generateKey() {
+  const part = () => {
+    const bytes = crypto.getRandomValues(new Uint8Array(2));
+    return [...bytes].map(x =>
+      x.toString(16).padStart(2, "0")
+    ).join("").toUpperCase();
+  };
+
+  const key = "MEOW-" +
+  part() + "-" +
+  part() + "-" +
+  part() + "-" +
+  part();
+
+  validKeys.add(key);
+  document.getElementById("key").value = key;
+  document.getElementById("result").textContent = "สร้างคีย์แล้ว";
+}
+
+function checkKey() {
+  const key = document.getElementById("key").value.trim();
+  document.getElementById("result").textContent =
+    validKeys.has(key) ? "คีย์ถูกต้อง" : "คีย์ไม่ถูกต้อง";
+}
+</script>
+</body>
+</html>
+
